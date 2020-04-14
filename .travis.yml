@@ -7,4 +7,16 @@ before_install:
   - docker build -t snyk-schmidtty/simple-react -f Dockerfile.dev .
 
 script:
-  - docker run -e CI=true snyk-schmidtty/simple-react npm run test
+  - docker run -e CI=true snyk-schmidtty/simple-react npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "udemy-simple-react"
+  env: "UdemySimpleReact-env"
+  bucket_name: "elasticbeanstalk-us-east-1-481449512106"
+  bucket_path: "udemy-simple-react"
+  on:
+    branch: master
+access_key_id: $AWS_ACCESS_KEY
+secret_access_key: $AWS_SECRET_KEY
